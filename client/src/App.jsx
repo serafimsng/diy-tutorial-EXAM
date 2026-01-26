@@ -11,7 +11,7 @@ import Register from './Register';
 
 const Navbar = ({ cartCount, token, handleLogout }) => (
   <nav className="navbar">
-    <Link to="/" className="logo">🛍️ CourtneyStore</Link> {/* Ganti nama sesuai Toko */}
+    <Link to="/" className="logo">🛍️ ZachaStore</Link> {/* Ganti nama sesuai Toko */}
     <div className="nav-actions">
       <Link to="/" className="btn btn-outline" style={{ border: 'none' }}>Beranda</Link>
       
@@ -46,7 +46,7 @@ const Navbar = ({ cartCount, token, handleLogout }) => (
 
 const Footer = () => (
   <footer>
-    <p>&copy; 2026 Courtney Gadget Store. Full CRUD & Security Implementation.</p>
+    <p>&copy; 2026 Zacha Gadget Store. Full CRUD & Security Implementation.</p>
   </footer>
 );
 
