@@ -177,7 +177,7 @@ function ProductList({ addToCart, token }) { // TERIMA PROPS TOKEN
   return (
     <div>
       <header className="hero">
-        <h1>Courtney Gadget Store</h1>
+        <h1>Zacha Gadget Store</h1>
         <p>Admin Dashboard & Customer View</p>
       </header>
 
