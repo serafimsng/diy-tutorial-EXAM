@@ -6,8 +6,7 @@ const app = express();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('./models/User'); // Import model User yg baru dibuat
-
-const JWT_SECRET = "kuncirahasia_courtney_store_123"; 
+const JWT_SECRET = process.env.JWT_SECRET; 
 
 // --- PENGATURAN PENTING (Agar tidak error saat upload gambar) ---
 app.use(express.json({ limit: '50mb' }));
@@ -20,8 +19,7 @@ app.use(cors());
 const connectDB = async () => {
   if (mongoose.connection.readyState >= 1) return;
   try {
-    // 👇 INI LINK MONGODB KAMU
-    await mongoose.connect('mongodb+srv://admin:admin123@cluster0.rtinywq.mongodb.net/?appName=Cluster0');
+    await mongoose.connect(process.env.MONGO_URI);
     console.log("✅ Database MongoDB Terhubung!");
   } catch (err) {
     console.error("❌ Gagal Konek:", err);
@@ -128,10 +126,6 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// --- JANGAN LUPA BARIS INI (Wajib untuk Vercel) ---
-module.exports = app;
+const PORT = process.env.PORT || 5000;
 
-// Jalankan Server (Hanya jika dijalankan manual, bukan oleh Vercel)
-if (require.main === module) {
-  app.listen(5000, () => console.log('Server berjalan di port 5000'));
-}
+app.listen(PORT, () => console.log("Server running on port", PORT));
