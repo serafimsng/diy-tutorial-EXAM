@@ -1,131 +1,27 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
+
+const connectDB = require("./config/db");
+
+const productRoutes = require("./routes/productRoutes");
+const authRoutes = require("./routes/authRoutes");
+
 const app = express();
-// Tambahkan di paling atas file
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('./models/User'); // Import model User yg baru dibuat
-const JWT_SECRET = process.env.JWT_SECRET; 
 
-// --- PENGATURAN PENTING (Agar tidak error saat upload gambar) ---
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
-
-// Izinkan Frontend mengakses Backend
+// Middleware
 app.use(cors());
+app.use(express.json({ limit: "50mb" }));
 
-// --- KONEKSI DATABASE SPESIAL VERCEL (Anti Timeout) ---
-const connectDB = async () => {
-  if (mongoose.connection.readyState >= 1) return;
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log("✅ Database MongoDB Terhubung!");
-  } catch (err) {
-    console.error("❌ Gagal Konek:", err);
-  }
-};
+// Connect DB
+connectDB();
 
-// Middleware: Paksa connect database sebelum memproses request apapun
-app.use(async (req, res, next) => {
-  await connectDB();
-  next();
-});
+// Routes
+app.use("/products", productRoutes);
+app.use("/", authRoutes);
 
-// --- MODEL DATA PRODUK ---
-const ProductSchema = new mongoose.mongoose.Schema({
-  name: String,
-  price: Number,
-  description: String,
-  image: String
-});
-const Product = mongoose.model('Product', ProductSchema);
-
-// --- ROUTE API (CRUD LENGKAP) ---
-
-// 1. READ ALL (Ambil Semua Data)
-app.get('/products', async (req, res) => {
-  try {
-    const products = await Product.find();
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// 2. READ ONE (Ambil 1 Data berdasarkan ID)
-app.get('/products/:id', async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    res.json(product);
-  } catch (error) {
-    res.status(404).json({ message: "Produk tidak ditemukan" });
-  }
-});
-
-// 3. CREATE (Tambah Data Baru)
-app.post('/products', async (req, res) => {
-  try {
-    const newProduct = new Product(req.body);
-    await newProduct.save();
-    res.status(201).json(newProduct);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-// 4. UPDATE (Edit Data)
-app.put('/products/:id', async (req, res) => {
-  try {
-    const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.json(updatedProduct);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-// 5. DELETE (Hapus Data)
-app.delete('/products/:id', async (req, res) => {
-  try {
-    await Product.findByIdAndDelete(req.params.id);
-    res.json({ message: "Produk berhasil dihapus" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// --- FITUR LOGIN & REGISTER (Auth) ---
-
-// REGISTER
-app.post('/register', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ username, password: hashedPassword });
-    await user.save();
-    res.status(201).json({ message: 'User created' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// LOGIN
-app.post('/login', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
-    if (!user) return res.status(400).json({ error: 'User not found' });
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ error: 'Invalid credentials' });
-
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
+// Server
 const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => console.log("Server running on port", PORT));
+app.listen(PORT, () =>
+  console.log("🚀 Server running on port", PORT)
+);
