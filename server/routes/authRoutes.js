@@ -9,16 +9,16 @@ const JWT_SECRET = process.env.JWT_SECRET;
 // REGISTER
 router.post("/register", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ email });
     if (existingUser)
       return res.status(400).json({ error: "Username already taken" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new User({
-      username,
+      email,
       password: hashedPassword,
     });
 
@@ -34,9 +34,9 @@ router.post("/register", async (req, res) => {
 // LOGIN
 router.post("/login", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
     if (!user)
       return res.status(400).json({ error: "User not found" });
 
