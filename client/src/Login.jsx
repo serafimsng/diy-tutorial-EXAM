@@ -21,7 +21,7 @@ export default function Login({ setToken }) { // Terima props setToken
       alert('Login Berhasil!');
       navigate('/'); // Kembali ke Home
     } catch (error) {
-      alert('Login Gagal: ' + (error.response?.data?.message || error.message));
+      alert('Login Gagal: ' + error.message);
     }
   };
 
