@@ -15,6 +15,7 @@ export default function Register() {
       alert('Registrasi Berhasil! Silakan Login.');
       navigate('/login'); // Pindah ke halaman login
     } catch (error) {
+      console.log("ERROR: ", error)
       alert('Registrasi Gagal: ' + (error.response?.data?.message || error.message));
     }
   };

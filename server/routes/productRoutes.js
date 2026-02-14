@@ -9,6 +9,7 @@ router.get("/", async (req, res) => {
     const products = await Product.find();
     res.json(products);
   } catch (error) {
+    console.log("GET ALL ERROR: ", err);
     res.status(500).json({ message: error.message });
   }
 });
@@ -19,6 +20,7 @@ router.get("/:id", async (req, res) => {
     const product = await Product.findById(req.params.id);
     res.json(product);
   } catch {
+    console.log("GET ONE ERROR: ", err);
     res.status(404).json({ message: "Produk tidak ditemukan" });
   }
 });
@@ -30,6 +32,7 @@ router.post("/", async (req, res) => {
     await newProduct.save();
     res.status(201).json(newProduct);
   } catch (error) {
+    console.log("CREATE ERROR: ", err);
     res.status(400).json({ message: error.message });
   }
 });
@@ -44,6 +47,7 @@ router.put("/:id", async (req, res) => {
     );
     res.json(updated);
   } catch (error) {
+    console.log("UPDATE ERROR: ", err);
     res.status(400).json({ message: error.message });
   }
 });
@@ -54,6 +58,7 @@ router.delete("/:id", async (req, res) => {
     await Product.findByIdAndDelete(req.params.id);
     res.json({ message: "Produk berhasil dihapus" });
   } catch (error) {
+    console.log("DELETE ERROR: ", err);
     res.status(500).json({ message: error.message });
   }
 });
