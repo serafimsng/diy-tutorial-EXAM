@@ -11,20 +11,15 @@ import Register from './Register';
 
 const Navbar = ({ cartCount, token, handleLogout }) => (
   <nav className="navbar">
-    <Link to="/" className="logo">🛍️ ZachaStore</Link> {/* Ganti nama sesuai Toko */}
+    <Link to="/" className="logo">All About DIY</Link> {/* Ganti nama sesuai Toko */}
     <div className="nav-actions">
       <Link to="/" className="btn btn-outline" style={{ border: 'none' }}>Beranda</Link>
       
-      {/* LOGIKA TAMPILAN MENU (AUTH) */}
       {token ? (
         <>
-          {/* KALAU SUDAH LOGIN: Muncul Tambah Produk & Logout */}
           <Link to="/add" className="btn btn-primary">
-            + Tambah Produk
+            + Buat Tutorial
           </Link>
-          <div className="cart-btn" style={{ marginLeft: '10px' }}>
-            🛒 <span className="badge">{cartCount}</span>
-          </div>
           <button 
             onClick={handleLogout} 
             className="btn" 
@@ -46,7 +41,7 @@ const Navbar = ({ cartCount, token, handleLogout }) => (
 
 const Footer = () => (
   <footer>
-    <p>&copy; 2026 Zacha Gadget Store. Full CRUD & Security Implementation.</p>
+    <p>&copy; One Stop For All Your Tutorials.</p>
   </footer>
 );
 
@@ -68,7 +63,7 @@ function ProductForm() {
 
   useEffect(() => {
     if (id) {
-      axios.get(`https://toko-online-lab.vercel.app/products/${id}`)
+      axios.get(`https://diy-tutorial-exam.onrender.com/products/${id}`)
         .then(res => setFormData(res.data))
         .catch(err => console.error(err));
     }
@@ -81,16 +76,16 @@ function ProductForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (id) {
-      axios.put(`https://toko-online-lab.vercel.app/products/${id}`, formData)
+      axios.put(`https://diy-tutorial-exam.onrender.com/products/${id}`, formData)
         .then(() => {
-          alert("✅ Produk berhasil diperbarui!");
+          alert("✅ Tutorial berhasil diperbarui!");
           navigate("/");
         })
         .catch(err => alert("Gagal update: " + err.message));
     } else {
-      axios.post(`https://toko-online-lab.vercel.app/products`, formData)
+      axios.post(`https://diy-tutorial-exam.onrender.com/products`, formData)
         .then(() => {
-          alert("✅ Produk baru berhasil disimpan!");
+          alert("✅ Tutorial baru berhasil disimpan!");
           navigate("/");
         })
         .catch(err => alert("Gagal simpan: " + err.message));
@@ -104,14 +99,14 @@ function ProductForm() {
       </h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Nama Produk</label>
+          <label>Judul Tutorial</label>
           <input type="text" name="name" className="form-control" required 
-                 value={formData.name} onChange={handleChange} placeholder="Contoh: iPhone 15" />
+                 value={formData.name} onChange={handleChange} placeholder="Contoh: Cara Membobok Tembok" />
         </div>
         <div className="form-group">
-          <label>Harga (Rupiah)</label>
+          <label>Durasi Tutorial</label>
           <input type="number" name="price" className="form-control" required 
-                 value={formData.price} onChange={handleChange} placeholder="Contoh: 15000000" />
+                 value={formData.price} onChange={handleChange} placeholder="Contoh: 15 menit" />
         </div>
         <div className="form-group">
           <label>URL Gambar</label>
@@ -122,11 +117,11 @@ function ProductForm() {
         <div className="form-group">
           <label>Deskripsi</label>
           <textarea name="description" className="form-control" required 
-                    value={formData.description} onChange={handleChange} placeholder="Jelaskan produkmu..." />
+                    value={formData.description} onChange={handleChange} placeholder="Jelaskan tutorial mu..." />
         </div>
         
         <button type="submit" className="btn btn-primary btn-block">
-          {id ? "Update Data" : "Simpan Produk"}
+          {id ? "Update Tutorial" : "Simpan Tutorial"}
         </button>
         <button type="button" onClick={() => navigate('/')} className="btn btn-outline btn-block" style={{ marginTop: '10px' }}>
           Batal
@@ -136,14 +131,13 @@ function ProductForm() {
   );
 }
 
-// --- BAGIAN 3: HALAMAN UTAMA (READ ALL & DELETE) ---
-function ProductList({ addToCart, token }) { // TERIMA PROPS TOKEN
+function ProductList({ addToCart, token }) {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
 
   const fetchProducts = () => {
-    axios.get('https://toko-online-lab.vercel.app/products')
+    axios.get('https://diy-tutorial-exam.onrender.com/products')
       .then(res => { 
         setProducts(res.data); 
         setLoading(false); 
@@ -157,10 +151,10 @@ function ProductList({ addToCart, token }) { // TERIMA PROPS TOKEN
   useEffect(() => { fetchProducts(); }, []);
 
   const handleDelete = (id, namaProduk) => {
-    if (window.confirm(`Yakin ingin menghapus produk "${namaProduk}" secara permanen?`)) {
-      axios.delete(`https://toko-online-lab.vercel.app/products/${id}`)
+    if (window.confirm(`Yakin ingin menghapus tutorial "${namaProduk}" secara permanen?`)) {
+      axios.delete(`https://diy-tutorial-exam.onrender.com/products/${id}`)
         .then(() => {
-          alert("🗑️ Produk berhasil dihapus.");
+          alert("🗑️ Tutorial berhasil dihapus.");
           fetchProducts();
         })
         .catch(err => {
@@ -177,18 +171,18 @@ function ProductList({ addToCart, token }) { // TERIMA PROPS TOKEN
   return (
     <div>
       <header className="hero">
-        <h1>Zacha Gadget Store</h1>
+        <h1>All About DIY</h1>
         <p>Admin Dashboard & Customer View</p>
       </header>
 
       <div className="controls">
-        <input type="text" placeholder="🔍 Cari produk..." className="search-bar"
+        <input type="text" placeholder="🔍 Cari tutorial..." className="search-bar"
                value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
       </div>
 
       {loading ? <div style={{ textAlign: 'center', padding: '50px' }}>Sedang memuat data...</div> : (
         <div className="product-grid">
-          {filteredProducts.length === 0 && <p style={{ textAlign: 'center', width: '100%' }}>Produk tidak ditemukan.</p>}
+          {filteredProducts.length === 0 && <p style={{ textAlign: 'center', width: '100%' }}>Tutorial tidak ditemukan.</p>}
           
           {filteredProducts.map((product) => (
             <div key={product._id} className="product-card">
@@ -199,8 +193,7 @@ function ProductList({ addToCart, token }) { // TERIMA PROPS TOKEN
                 
                 <div className="card-actions">
                    <Link to={`/detail/${product._id}`} className="btn btn-outline">Detail</Link>
-                   {/* Tombol Beli Semua Orang Bisa Lihat */}
-                   <button onClick={addToCart} className="btn btn-primary">Beli</button>
+                   {/* <button onClick={addToCart} className="btn btn-primary">Beli</button> */}
                 </div>
                 
                 {/* --- AREA KHUSUS ADMIN (HANYA MUNCUL JIKA ADA TOKEN) --- */}
@@ -237,7 +230,7 @@ function ProductDetail({ addToCart, token }) { // TERIMA PROPS TOKEN
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    axios.get(`https://toko-online-lab.vercel.app/products/${id}`)
+    axios.get(`https://diy-tutorial-exam.onrender.com/products/${id}`)
       .then(res => setProduct(res.data))
       .catch(err => console.error(err));
   }, [id]);

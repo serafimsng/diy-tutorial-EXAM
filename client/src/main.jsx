@@ -2,12 +2,9 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
+// import ReactGA from "react-ga4";
 
-// --- 1. PANGGIL LOGROCKET (WAJIB ADA) ---
-import LogRocket from 'logrocket';
-
-// --- 2. AKTIFKAN DENGAN ID KAMU ---
-LogRocket.init('acuxic/toko-zacharia'); 
+// ReactGA.initialize("G-JBG2TP4H3X");
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

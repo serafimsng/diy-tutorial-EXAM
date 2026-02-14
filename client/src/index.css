@@ -1,7 +1,7 @@
 /* client/src/index.css */
 :root {
-  --primary: #2563eb; /* Biru Modern */
-  --secondary: #1e293b; /* Hitam Gelap */
+  --primary: #c9710d; /* Biru Modern */
+  --secondary: #c9710d; /* Hitam Gelap */
   --accent: #f59e0b; /* Kuning Emas */
   --bg-light: #f8fafc;
   --text-dark: #0f172a;
@@ -29,15 +29,15 @@ body { background-color: var(--bg-light); color: var(--text-dark); line-height: 
 
 /* Hero Section (Banner) */
 .hero {
-  background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, #c9710d 100%);
   color: white; padding: 4rem 5%; text-align: center; margin-bottom: 2rem;
-  border-radius: 0 0 30px 30px;
+  border-radius: 0 0 0 0;
 }
 .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
 .hero p { opacity: 0.9; font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
 
 /* Controls (Search & Filter) */
-.controls { display: flex; justify-content: space-between; padding: 0 5%; margin-bottom: 2rem; flex-wrap: wrap; gap: 10px; }
+.controls { display: flex; justify-content: center; padding: 0 5%; margin-bottom: 2rem; flex-wrap: wrap; gap: 10px; }
 .search-bar {
   flex: 1; max-width: 400px; padding: 12px 20px; border: 1px solid #ddd;
   border-radius: 50px; outline: none; transition: 0.3s;
@@ -46,7 +46,7 @@ body { background-color: var(--bg-light); color: var(--text-dark); line-height: 
 
 /* Grid Produk */
 .product-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  display: flex; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 25px; padding: 0 5%; margin-bottom: 4rem;
 }
 .product-card {
