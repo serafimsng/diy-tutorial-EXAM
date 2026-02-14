@@ -11,7 +11,7 @@ export default function Login({ setToken }) { // Terima props setToken
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('https://diy-tutorial-exam.onrender.com/login', { username, password });
+      const res = await axios.post('https://diy-tutorial-exam.onrender.com/login', { email: username, password });
       
       // SIMPAN TOKEN (Sesuai Soal LO3)
       const token = res.data.token;
