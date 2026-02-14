@@ -11,7 +11,7 @@ export default function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://diy-tutorial-exam.onrender.com/register', { username, password });
+      await axios.post('https://diy-tutorial-exam.onrender.com/register', { email: username, password });
       alert('Registrasi Berhasil! Silakan Login.');
       navigate('/login'); // Pindah ke halaman login
     } catch (error) {
