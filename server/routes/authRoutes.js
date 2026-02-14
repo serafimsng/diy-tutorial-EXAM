@@ -10,7 +10,8 @@ const JWT_SECRET = process.env.JWT_SECRET;
 router.post("/register", async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log("REQUEST BODY: ", req)
+    console.log("REQUEST BODY REGISTER: ", req.body)
+
     const existingUser = await User.findOne({ username: email });
     if (existingUser)
       return res.status(400).json({ error: "Username already taken" });
@@ -35,6 +36,7 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log("REQUEST BODY LOGIN: ", req.body)
 
     const user = await User.findOne({ username: email });
     if (!user)
