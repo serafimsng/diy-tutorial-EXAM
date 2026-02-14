@@ -10,7 +10,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 router.post("/register", async (req, res) => {
   try {
     const { email, password } = req.body;
-
+    console.log("REQUEST BODY: ", req)
     const existingUser = await User.findOne({ email });
     if (existingUser)
       return res.status(400).json({ error: "Username already taken" });
