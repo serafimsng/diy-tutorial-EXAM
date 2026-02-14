@@ -11,14 +11,14 @@ router.post("/register", async (req, res) => {
   try {
     const { email, password } = req.body;
     console.log("REQUEST BODY: ", req)
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ username: email });
     if (existingUser)
       return res.status(400).json({ error: "Username already taken" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new User({
-      email,
+      username: email,
       password: hashedPassword,
     });
 
@@ -36,7 +36,7 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ username: email });
     if (!user)
       return res.status(400).json({ error: "User not found" });
 
